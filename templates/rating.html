@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate These Movies</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .movie-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .movie-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 180px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .movie-card img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .movie-card-title {
+            font-weight: bold;
+            margin: 10px 0 5px;
+            font-size: 14px;
+        }
+        .rating-select {
+            margin: 5px 0;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .button {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+<h1>Rate These Movies</h1>
+
+<!-- Main form for movie ratings -->
+<form id="ratingForm" method="POST" action="/recommend">
+    <div class="movie-grid">
+        {% for m in movies %}
+        <div class="movie-card">
+            <img src="{{m.ImageURL}}" alt="{{m.Title}} poster">
+            <div class="movie-card-title">{{m.Title}}</div>
+            <div class="rating-select">
+                <label>Rating:
+                    <select name="{{m.mID}}">
+                        <option value="N/A">N/A</option>
+                        <option value="1">★☆☆☆☆</option>
+                        <option value="2">★★☆☆☆</option>
+                        <option value="3">★★★☆☆</option>
+                        <option value="4">★★★★☆</option>
+                        <option value="5">★★★★★</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="controls">
+        <input type="submit" value="Get Recommendations" class="button">
+    </div>
+</form>
+
+<!-- Separate form for loading more movies -->
+<form method="POST" action="/load_more" class="controls">
+    <input type="hidden" name="start_index" value="{{start_index}}">
+    <input type="submit" value="Load More Movies" class="button">
+</form>
+
+</body>
+</html>
